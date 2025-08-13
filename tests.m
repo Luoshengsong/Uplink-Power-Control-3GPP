@@ -1,4 +1,4 @@
-
+% reference website: https://www.nrexplained.com/upc
 % 基于3GPP LTE 上行开环功率控制的多用户功率分配仿真
 % 模拟用户在半径1km小区均匀分布，计算：
 %   1) 每个用户的发射功率(dBm)
@@ -56,19 +56,6 @@ Noise_dBm = -174 + 10*log10(BW_Hz) + NF_dB; % 热噪声 + NF
 % SNR (dB)
 SNR_dB = Prx_dBm - Noise_dBm;
 
-
-P_vec =  10.^(0.1 * SNR_dB);
-sigma2 = length(P_vec)/sum(P_vec);
-P_vec = sigma2 * 10.^(0.1 * SNR_dB);
-A0 = randn(L, N_UE) ;
-A = A0 * diag( sqrt(P_vec) );
-dia0 = eig(A0 * A0' / N_UE);
-dia = eig(A * A' / N_UE);
-figure;
-histogram(dia);
-hold on;
-histogram(dia0);
-
 %% ======== 输出结果表格 ========
 T = table((1:N_UE)', distances, PL_dB, Ptx_dBm, Prx_dBm, SNR_dB, ...
     'VariableNames', {'UE_id','distance_m','PathLoss_dB','Ptx_dBm','Prx_dBm','SNR_dB'});
@@ -109,3 +96,4 @@ xlabel('X (m)'); ylabel('Y (m)');
 axis equal;
 title('UE Positions (Color = P_{tx} dBm)');
 grid on;
+
